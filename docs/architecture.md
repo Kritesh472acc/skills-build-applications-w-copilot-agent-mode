@@ -30,20 +30,20 @@ OctoFit Tracker is a three-tier application for a school fitness program. The st
 
 Record your plan here before editing code.
 
-- Presentation tier decision:
-- Logic tier decision:
-- Data tier decision:
-- Activity tracking approach:
-- Team management approach:
-- Leaderboard approach:
-- Workout suggestions approach:
+- Presentation tier decision: Keep rendering and accessible UI states in React components, with all API requests routed through the shared client.
+- Logic tier decision: Keep request validation and fitness behavior in Express services, with routes limited to HTTP input and response handling.
+- Data tier decision: Enforce required fields in Mongoose schemas and seed stable demo records with upserts that preserve unrelated data.
+- Activity tracking approach: Validate user and team IDs and references before saving; compute points and occurrence time in the service.
+- Team management approach: Require a team name, preserve the submitted name and mascot, and keep member references consistent.
+- Leaderboard approach: Sum activity points by team, sort highest first, and assign ranks starting at one.
+- Workout suggestions approach: Match workouts to the user's goal or recent activity, explain the match, and return a deliberate 4xx for unknown users.
 
 ## Test plan
 
 Record the commands you run and what each failure means.
 
-- Data-tier command: `npm run test:data --prefix octofit-tracker/backend`
-- API command: `npm run test:api --prefix octofit-tracker/backend`
-- Frontend command: `npm test --prefix octofit-tracker/frontend`
-- Backend build command: `npm run build --prefix octofit-tracker/backend`
-- Frontend build command: `npm run build --prefix octofit-tracker/frontend`
+- Data-tier command: `npm run test:data --prefix octofit-tracker/backend` — checks model validation and seed idempotency; the baseline has schema-validation failures while the seed test passes.
+- API command: `npm run test:api --prefix octofit-tracker/backend` — checks endpoint contracts; the baseline has invalid-input, leaderboard, and workout-suggestion failures.
+- Frontend command: `npm test --prefix octofit-tracker/frontend` — checks API data rendering and loading, empty, and error states; all 15 baseline checks fail.
+- Backend build command: `npm run build --prefix octofit-tracker/backend` — checks TypeScript compilation; not run in the Step 1 baseline.
+- Frontend build command: `npm run build --prefix octofit-tracker/frontend` — checks TypeScript and Vite production build; not run in the Step 1 baseline.
